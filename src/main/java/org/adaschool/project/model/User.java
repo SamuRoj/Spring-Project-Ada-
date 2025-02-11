@@ -1,31 +1,40 @@
 package org.adaschool.project.model;
 
 import org.adaschool.project.dto.UserDTO;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+@Document(collection = "users")
 public class User {
-    private Integer id;
+
+    @Id
+    private String id;
     private String name;
     private String lastName;
     private String email;
     private String password;
 
-    public User(Integer id, String name, String lastName, String email, String password) {
+    public User(){
+    }
+
+    public User(String id, String name, String lastName, String email, String password) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
         this.email = email;
-        this.password = password;
+        this.password = new BCryptPasswordEncoder().encode(password);
     }
 
-    public User(Integer id, UserDTO userDTO){
-        this.id = id;
+    public User(UserDTO userDTO){
+        this.id = null;
         this.name = userDTO.getName();
         this.lastName = userDTO.getLastName();
         this.email = userDTO.getEmail();
-        this.password = userDTO.getPassword();
+        this.password = new BCryptPasswordEncoder().encode(userDTO.getPassword());
     }
 
-    public Integer getId(){
+    public String getId(){
         return id;
     }
 
@@ -53,11 +62,18 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
+    public String getPasswordHash() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void update(UserDTO userDTO){
+        this.name = userDTO.getName();
+        this.lastName = userDTO.getLastName();
+        this.email = userDTO.getEmail();
+        this.password = new BCryptPasswordEncoder().encode(userDTO.getPassword());
     }
 }

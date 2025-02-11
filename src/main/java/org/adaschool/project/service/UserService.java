@@ -1,8 +1,10 @@
 package org.adaschool.project.service;
 
+import org.adaschool.project.UserRepository;
 import org.adaschool.project.dto.UserDTO;
 import org.adaschool.project.exception.UserNotFoundException;
 import org.adaschool.project.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -10,35 +12,40 @@ import java.util.*;
 @Service
 public class UserService {
 
-    private Map<Integer, User> users = new HashMap<>();
+    private UserRepository userRepository;
 
-    public List<User> getAllUsers(){
-        return new ArrayList<>(users.values());
+    @Autowired
+    private UserService(UserRepository userRepository){
+        this.userRepository = userRepository;
     }
 
-    public User getUserById(Integer id){
-        if(users.get(id) != null) return users.get(id);
+    public List<User> getAllUsers(){
+        return new ArrayList<>(userRepository.findAll());
+    }
+
+    public User getUserById(String id){
+        Optional<User> user = userRepository.findById(id);
+        if(user.isPresent()) return user.get();
         throw new UserNotFoundException(id);
     }
 
     public User saveUser(UserDTO userDTO){
-        User newUser = new User(users.size() + 1, userDTO);
-        users.put(newUser.getId(), newUser);
+        User newUser = new User(userDTO);
+        userRepository.save(newUser);
         return newUser;
     }
 
-    public User updateUser(Integer id, UserDTO userDTO){
-        User updateUser = users.get(id);
-        updateUser.setName(userDTO.getName());
-        updateUser.setLastName(userDTO.getLastName());
-        updateUser.setEmail(userDTO.getEmail());
-        updateUser.setPassword(userDTO.getPassword());
-        users.put(id, updateUser);
+    public User updateUser(String id, UserDTO userDTO){
+        Optional<User> user = userRepository.findById(id);
+        if(user.isEmpty()) throw new UserNotFoundException(id);
+        User updateUser = user.get();
+        updateUser.update(userDTO);
+        userRepository.save(updateUser);
         return updateUser;
     }
 
-    public void deleteUser(Integer id) throws UserNotFoundException{
-        if(!users.containsKey(id)) throw new UserNotFoundException(id);
-        users.remove(id);
+    public void deleteUser(String id) throws UserNotFoundException{
+        if(!userRepository.existsById(id)) throw new UserNotFoundException(id);
+        userRepository.deleteById(id);
     }
 }
