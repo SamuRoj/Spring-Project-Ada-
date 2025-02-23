@@ -1,7 +1,7 @@
 package org.adaschool.project.controller.user;
 
 import org.adaschool.project.dto.UserDTO;
-import org.adaschool.project.model.User;
+import org.adaschool.project.model.UserEntity;
 import org.adaschool.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,28 +22,28 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
-        return ResponseEntity.ok(users);
+    public ResponseEntity<List<UserEntity>> getAllUsers() {
+        List<UserEntity> userEntities = userService.getAllUsers();
+        return ResponseEntity.ok(userEntities);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> findById(@PathVariable("id") String id) {
-        User user = userService.getUserById(id);
-        return ResponseEntity.ok(user);
+    public ResponseEntity<UserEntity> findById(@PathVariable("id") String id) {
+        UserEntity userEntity = userService.getUserById(id);
+        return ResponseEntity.ok(userEntity);
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody UserDTO userDTO) {
-        User createdUser = userService.saveUser(userDTO);
-        URI createdUserUri = URI.create("/v1/users/" + createdUser.getId());
-        return ResponseEntity.created(createdUserUri).body(createdUser);
+    public ResponseEntity<UserEntity> createUser(@RequestBody UserDTO userDTO) {
+        UserEntity createdUserEntity = userService.saveUser(userDTO);
+        URI createdUserUri = URI.create("/v1/users/" + createdUserEntity.getId());
+        return ResponseEntity.created(createdUserUri).body(createdUserEntity);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable("id") String id, @RequestBody UserDTO userDTO) {
-        User updatedUser = userService.updateUser(id, userDTO);
-        return ResponseEntity.ok(updatedUser);
+    public ResponseEntity<UserEntity> updateUser(@PathVariable("id") String id, @RequestBody UserDTO userDTO) {
+        UserEntity updatedUserEntity = userService.updateUser(id, userDTO);
+        return ResponseEntity.ok(updatedUserEntity);
     }
 
     @DeleteMapping("/{id}")

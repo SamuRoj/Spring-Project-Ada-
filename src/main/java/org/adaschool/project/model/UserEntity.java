@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Document(collection = "users")
-public class User {
+public class UserEntity {
 
     @Id
     private String id;
@@ -15,10 +15,10 @@ public class User {
     private String email;
     private String password;
 
-    public User(){
+    public UserEntity(){
     }
 
-    public User(String id, String name, String lastName, String email, String password) {
+    public UserEntity(String id, String name, String lastName, String email, String password) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
@@ -26,7 +26,7 @@ public class User {
         this.password = new BCryptPasswordEncoder().encode(password);
     }
 
-    public User(UserDTO userDTO){
+    public UserEntity(UserDTO userDTO){
         this.id = null;
         this.name = userDTO.getName();
         this.lastName = userDTO.getLastName();
