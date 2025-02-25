@@ -4,8 +4,6 @@ import org.adaschool.project.exception.InvalidCredentialsException;
 import org.adaschool.project.model.UserEntity;
 import org.adaschool.project.service.UserService;
 import org.adaschool.project.security.JWTUtil;
-import org.adaschool.project.controller.auth.LoginDTO;
-import org.adaschool.project.controller.auth.TokenDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,7 +31,7 @@ public class AuthController {
         Optional<UserEntity> optionalUser = userService.getUserByEmail(loginDto.getUsername());
         if(optionalUser.isPresent()){
             UserEntity userEntity = optionalUser.get();
-            if(BCrypt.checkpw(loginDto.getPassword(), userEntity.getPasswordHash())){
+            if(BCrypt.checkpw(loginDto.getPassword(), userEntity.getPassword())){
                 TokenDTO tokenDTO = jwtUtil.generateToken(loginDto.getUsername());
                 return ResponseEntity.ok(tokenDTO);
             }

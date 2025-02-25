@@ -1,5 +1,12 @@
 package org.adaschool.project.dto;
 
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@Builder
 public class UserDTO {
     private final String name;
     private final String lastName;
@@ -25,21 +32,5 @@ public class UserDTO {
         this.lastName = lastName;
         this.email = email;
         this.password = "";
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
     }
 }

@@ -1,5 +1,8 @@
 package org.adaschool.project.controller.auth;
 
+import lombok.Getter;
+
+@Getter
 public class LoginDTO {
 
     private final String username;
@@ -9,14 +12,6 @@ public class LoginDTO {
     public LoginDTO(String username, String password) {
         this.username = username;
         this.password = password;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
 }

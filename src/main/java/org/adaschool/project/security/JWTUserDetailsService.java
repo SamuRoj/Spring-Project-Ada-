@@ -29,7 +29,7 @@ public class JWTUserDetailsService implements UserDetailsService {
         if (optionalUser.isPresent()) {
             UserEntity userModel = optionalUser.get();
             List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-            return new User(userModel.getEmail(), userModel.getPasswordHash(), authorities);
+            return new User(userModel.getEmail(), userModel.getPassword(), authorities);
         } else {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
